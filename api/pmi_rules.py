@@ -327,7 +327,9 @@ def combine_ml_and_pmi_rules(
     hard_stop_triggered = int(hard_stop_count >= 2)
 
     final_risk_score = weighted_score
-    if ml_prediction == 1 or hard_stop_triggered == 1:
+    if ml_prediction == 1:
+        final_risk_score = max(final_risk_score, ml_score)
+    if hard_stop_triggered == 1:
         final_risk_score = max(final_risk_score, HIGH_RISK_THRESHOLD)
 
     if final_risk_score >= HIGH_RISK_THRESHOLD:
