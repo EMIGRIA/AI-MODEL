@@ -1,4 +1,4 @@
-"""Preprocessing utilities mirroring the Emigria DS training pipeline."""
+"""Preprocessing utilities mirroring the Emigria DS training pipeline (V2 PMI-adapted)."""
 
 from __future__ import annotations
 
@@ -38,6 +38,15 @@ TARGET_ENCODE_COLS = ["country", "employment_type", "industry"]
 TFIDF_MAX_FEATURES = 100
 TFIDF_FEATURES = [f"tfidf_{i}" for i in range(TFIDF_MAX_FEATURES)]
 
+# V2: 5 fitur PMI baru
+PMI_FEATURES = [
+    "has_visa_wisata",
+    "has_direct_contact",
+    "is_pmi_risk_destination",
+    "has_p3mi_signal",
+    "pmi_risk_score",
+]
+
 BASE_FEATURES = [
     "salary_mid",
     "salary_spread",
@@ -61,7 +70,7 @@ BASE_FEATURES = [
     "has_questions",
     "emp_type_fraud_rate",
     "industry_fraud_rate",
-]
+] + PMI_FEATURES
 
 FEATURE_COLUMNS = BASE_FEATURES + TFIDF_FEATURES
 
@@ -131,8 +140,12 @@ COUNTRY_MAP = {
     "LK": "Sri Lanka",
     "MM": "Myanmar",
     "VN": "Vietnam",
+    "KH": "Cambodia",
+    "LA": "Laos",
+    "MO": "Macau",
 }
 
+# V2 expanded keyword lists
 SCAM_KW_HIGH = [
     "tanpa potong gaji",
     "visa turis",
@@ -154,6 +167,22 @@ SCAM_KW_HIGH = [
     "send passport",
     "upfront payment",
     "advance payment",
+    "visa on arrival",
+    "berangkat hari ini",
+    "berangkat minggu ini",
+    "tanpa kontrak",
+    "proses kilat",
+    "rekrut langsung",
+    "tidak ada potongan",
+    "gaji langsung diterima",
+    "dp dulu",
+    "uang muka",
+    "biaya keberangkatan",
+    "paspor dipegang agen",
+    "paspor ditahan",
+    "overstay",
+    "illegal working",
+    "working permit tidak diurus",
 ]
 
 SCAM_KW_MED = [
@@ -172,6 +201,25 @@ SCAM_KW_MED = [
     "earn money fast",
     "make money online",
     "high income",
+    "gaji dollar",
+    "gaji ringgit",
+    "gaji dolar",
+    "kerja malaysia",
+    "kerja singapura",
+    "kerja taiwan",
+    "tkw",
+    "tki",
+    "cpmi",
+    "calon pmi",
+    "sponsor visa",
+    "agency fee",
+    "recruitment fee",
+    "contract 2 tahun",
+    "contract 3 tahun",
+    "penampungan",
+    "training center",
+    "slot terbatas",
+    "quota terbatas",
 ]
 
 SCAM_KW_LOW = [
@@ -185,6 +233,15 @@ SCAM_KW_LOW = [
     "contact now",
     "apply immediately",
     "limited slots",
+    "wa kami",
+    "hubungi wa",
+    "chat wa",
+    "dm kami",
+    "inbox kami",
+    "dm untuk info",
+    "klik link",
+    "info lebih lanjut hubungi",
+    "untuk informasi hubungi",
 ]
 
 ID_WORDS = [
@@ -198,7 +255,117 @@ ID_WORDS = [
     "hubungi",
     "pria",
     "wanita",
+    "perusahaan",
+    "kandidat",
+    "pengalaman",
+    "ijazah",
+    "kualifikasi",
+    "posisi",
+    "jabatan",
+    "lamaran",
+    "berkas",
+    "cv",
+    "dengan",
+    "untuk",
+    "dari",
+    "yang",
+    "dan",
+    "tidak",
+    "ada",
+    "anda",
+    "akan",
 ]
+
+# V2: Negara TPPO hotspot
+PMI_RISK_COUNTRIES = {
+    "cambodia": 0.80,
+    "kamboja": 0.80,
+    "myanmar": 0.75,
+    "laos": 0.70,
+    "lao": 0.70,
+    "vietnam": 0.50,
+    "thailand": 0.45,
+    "china": 0.40,
+    "tiongkok": 0.40,
+    "macau": 0.75,
+    "macao": 0.75,
+    "malaysia": 0.30,
+    "taiwan": 0.30,
+    "hong kong": 0.25,
+    "saudi arabia": 0.25,
+    "arab saudi": 0.25,
+    "uae": 0.20,
+    "dubai": 0.20,
+    "qatar": 0.20,
+    "bahrain": 0.20,
+    "kuwait": 0.20,
+    "oman": 0.20,
+    "turkey": 0.35,
+    "turki": 0.35,
+    "greece": 0.30,
+    "yunani": 0.30,
+    "philippines": 0.20,
+    "filipina": 0.20,
+}
+
+# V2: Sinyal loker PMI resmi
+PMI_LEGIT_SIGNALS = [
+    "bp2mi",
+    "bnp2tki",
+    "p3mi",
+    "sipmi",
+    "sisnaker",
+    "visa kerja",
+    "work permit",
+    "working visa",
+    "kontrak kerja resmi",
+    "perjanjian penempatan",
+    "asuransi pmi",
+    "bpjs ketenagakerjaan",
+    "terdaftar di kemnaker",
+    "berizin kemnaker",
+    "id.bp2mi.go.id",
+    "kemnaker.go.id",
+    "tidak ada biaya penempatan",
+    "biaya ditanggung majikan",
+    "sipp tkis",
+    "izin operasional",
+]
+
+# V2: Country prior fraud rate
+COUNTRY_PRIOR_FRAUD_RATE = {
+    "Cambodia": 0.75,
+    "Myanmar": 0.70,
+    "Laos": 0.65,
+    "Macau": 0.75,
+    "Macao": 0.75,
+    "China": 0.40,
+    "Tiongkok": 0.40,
+    "Vietnam": 0.45,
+    "Thailand": 0.40,
+    "Turkey": 0.35,
+    "Greece": 0.30,
+    "Malaysia": 0.28,
+    "Taiwan": 0.25,
+    "Hong Kong": 0.22,
+    "Saudi Arabia": 0.22,
+    "UAE": 0.18,
+    "Qatar": 0.18,
+    "Kuwait": 0.18,
+    "Bahrain": 0.18,
+    "Oman": 0.16,
+    "Indonesia": 0.15,
+    "Philippines": 0.18,
+    "United States": 0.048,
+    "United Kingdom": 0.020,
+    "Germany": 0.015,
+    "Australia": 0.035,
+    "New Zealand": 0.015,
+    "Canada": 0.020,
+    "Singapore": 0.030,
+}
+
+PRIOR_BLEND_ALPHA = 0.6
 
 
 def parse_salary(value: Any) -> tuple[float, float]:
@@ -257,7 +424,115 @@ def calc_scam_score(text: Any) -> int:
     return score
 
 
+def calc_pmi_risk_score(text: Any) -> int:
+    """V2: Composite PMI risk score (0-10) — sinyal khusus konteks PMI Indonesia."""
+    if not isinstance(text, str):
+        return 0
+    lowered = text.lower()
+    score = 0
+
+    visa_traps = [
+        "visa wisata",
+        "visa turis",
+        "tourist visa",
+        "visa on arrival",
+        "bebas visa",
+        "voa",
+    ]
+    score += 4 * sum(1 for v in visa_traps if v in lowered)
+
+    fee_traps = [
+        "biaya administrasi",
+        "biaya keberangkatan",
+        "bayar dulu",
+        "dp dulu",
+        "uang muka",
+        "advance payment",
+        "upfront",
+    ]
+    score += 3 * sum(1 for f in fee_traps if f in lowered)
+
+    tier1 = ["kamboja", "cambodia", "myanmar", "laos", "burma"]
+    score += 3 * sum(1 for c in tier1 if c in lowered)
+
+    muluk = [
+        "gaji besar",
+        "penghasilan jutaan",
+        "income tinggi",
+        "langsung diterima",
+        "proses cepat",
+        "tanpa syarat",
+    ]
+    score += 1 * sum(1 for m in muluk if m in lowered)
+
+    informal_contact = [
+        "wa ",
+        "whatsapp",
+        "telegram",
+        "t.me",
+        "wa.me",
+        "hubungi hp",
+        "sms ke",
+    ]
+    score += 2 * sum(1 for c in informal_contact if c in lowered)
+
+    return min(score, 10)
+
+
+def extract_pmi_features_from_row(row: pd.Series) -> dict[str, int]:
+    """V2: Ekstrak 5 fitur PMI domain-specific dari satu baris dataframe."""
+    desc = str(row.get("description", "")).lower()
+    title = str(row.get("title", "")).lower()
+    req = str(row.get("requirements", "")).lower()
+    loc = str(row.get("location", "")).lower()
+    full_text = f"{title} {desc} {req} {loc}"
+
+    visa_patterns = [
+        "visa wisata",
+        "visa turis",
+        "tourist visa",
+        "visa on arrival",
+        "bebas visa asean",
+        "without work permit",
+        "tanpa work permit",
+    ]
+    has_visa_wisata = int(any(p in full_text for p in visa_patterns))
+
+    contact_patterns = [
+        "wa.me",
+        "t.me",
+        "telegram",
+        "whatsapp",
+        "wa kami",
+        "chat wa",
+        "hubungi wa",
+    ]
+    has_direct_contact = int(
+        any(p in full_text for p in contact_patterns)
+        or bool(re.search(r"\+62\s*8[0-9]{8,11}", full_text))
+    )
+
+    is_pmi_risk_destination = int(
+        any(country in full_text for country in PMI_RISK_COUNTRIES.keys())
+    )
+
+    has_p3mi_signal = int(
+        any(signal in full_text for signal in PMI_LEGIT_SIGNALS)
+    )
+
+    pmi_risk_score = calc_pmi_risk_score(full_text)
+
+    return {
+        "has_visa_wisata": has_visa_wisata,
+        "has_direct_contact": has_direct_contact,
+        "is_pmi_risk_destination": is_pmi_risk_destination,
+        "has_p3mi_signal": has_p3mi_signal,
+        "pmi_risk_score": pmi_risk_score,
+    }
+
+
 def prepare_base_dataframe(raw_df: pd.DataFrame, has_target: bool = False) -> pd.DataFrame:
+    """V2: Cleaning + feature engineering + 5 fitur PMI."""
     df = raw_df.copy()
 
     needed_cols = RAW_COLUMNS.copy()
@@ -329,9 +604,30 @@ def prepare_base_dataframe(raw_df: pd.DataFrame, has_target: bool = False) -> pd
         na=False,
     ).astype(int)
     df["exclamation_count"] = df["description"].str.count("!").fillna(0)
-    df["is_indonesian_posting"] = df["description"].apply(
-        lambda value: int(sum(word in str(value).lower() for word in ID_WORDS) >= 3)
+
+    # V2: cek title+desc+req, threshold 2 (turun dari 3)
+    df["is_indonesian_posting"] = df.apply(
+        lambda row: int(
+            sum(
+                word
+                in (
+                    str(row["title"])
+                    + " "
+                    + str(row["description"])
+                    + " "
+                    + str(row["requirements"])
+                ).lower()
+                for word in ID_WORDS
+            )
+            >= 2
+        ),
+        axis=1,
     )
+
+    # V2: tambah 5 fitur PMI
+    pmi_feats = df.apply(extract_pmi_features_from_row, axis=1)
+    pmi_df = pd.DataFrame(pmi_feats.tolist(), index=df.index)
+    df = pd.concat([df, pmi_df], axis=1)
 
     return df
 
@@ -344,19 +640,35 @@ def transform_features(
     country_salary_data: dict[str, Any],
     feature_columns: list[str] | None = None,
 ) -> np.ndarray:
+    """V2: Transform features dengan country prior blending + combined-text TF-IDF."""
     feature_columns = feature_columns or FEATURE_COLUMNS
     x_out = base_df.copy()
 
     encoded = target_encoder.transform(x_out[TARGET_ENCODE_COLS])
     x_out["country_fraud_rate"] = encoded["country"]
-    x_out["country_safety_score"] = 1 - encoded["country"]
     x_out["emp_type_fraud_rate"] = encoded["employment_type"]
     x_out["industry_fraud_rate"] = encoded["industry"]
+
+    # V2: Country prior blending (case-insensitive lookup untuk robustness)
+    _prior_lookup = {k.lower(): v for k, v in COUNTRY_PRIOR_FRAUD_RATE.items()}
+
+    def blend_country_rate(row: pd.Series) -> float:
+        country = str(row["country"]).strip().lower()
+        te_rate = row["country_fraud_rate"]
+        if country in _prior_lookup:
+            prior = _prior_lookup[country]
+            return PRIOR_BLEND_ALPHA * prior + (1 - PRIOR_BLEND_ALPHA) * te_rate
+        return te_rate
+
+    x_out["country_fraud_rate"] = x_out.apply(blend_country_rate, axis=1)
+    x_out["country_safety_score"] = 1 - x_out["country_fraud_rate"]
 
     country_salary_avg = country_salary_data["country_salary_avg"]
     global_salary_median = country_salary_data["global_salary_median"]
 
-    x_out["country_avg_salary"] = x_out["country"].map(country_salary_avg).fillna(global_salary_median)
+    x_out["country_avg_salary"] = (
+        x_out["country"].map(country_salary_avg).fillna(global_salary_median)
+    )
     x_out["salary_vs_country_avg"] = np.where(
         x_out["salary_mid"].notna() & (x_out["country_avg_salary"] > 0),
         x_out["salary_mid"] / x_out["country_avg_salary"],
@@ -372,7 +684,15 @@ def transform_features(
     x_out[salary_cols] = x_out[salary_cols].fillna(-1)
     x_out["country_avg_salary"] = x_out["country_avg_salary"].fillna(global_salary_median)
 
-    tfidf_matrix = tfidf_vectorizer.transform(x_out["description"].fillna("")).toarray()
+    # V2 FIX: TF-IDF dari combined text (title + desc + req)
+    combined_text = (
+        x_out["title"].fillna("")
+        + " "
+        + x_out["description"].fillna("")
+        + " "
+        + x_out["requirements"].fillna("")
+    )
+    tfidf_matrix = tfidf_vectorizer.transform(combined_text).toarray()
     tfidf_df = pd.DataFrame(tfidf_matrix, columns=TFIDF_FEATURES, index=x_out.index)
     x_out = pd.concat([x_out, tfidf_df], axis=1)
 

@@ -175,6 +175,7 @@ def predict_one(record: dict[str, Any]) -> dict[str, Any]:
         record=record,
         ml_probability=ml_probability,
         threshold=threshold,
+        pmi_rule_threshold=6,
     )
     return result
 
