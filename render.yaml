@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: emigria-ai-service
+    runtime: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"

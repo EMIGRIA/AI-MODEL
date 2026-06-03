@@ -52,6 +52,35 @@ curl http://localhost:8000/health
 
 Jika artifact lengkap, response `status` akan bernilai `ready`.
 
+## Deploy ke Render
+
+Cara paling aman untuk project ini adalah deploy sebagai Docker Web Service.
+Versi Python dikunci di `api/Dockerfile`:
+
+```text
+python:3.11.15-slim-bookworm
+```
+
+Jika memakai Blueprint, gunakan `render.yaml` di root repo. Render akan memakai:
+
+```text
+runtime: docker
+dockerfilePath: ./api/Dockerfile
+dockerContext: .
+healthCheckPath: /health
+```
+
+Jika setup manual dari dashboard Render:
+
+```text
+Language/Runtime: Docker
+Dockerfile Path: ./api/Dockerfile
+Docker Build Context Directory: .
+Health Check Path: /health
+```
+
+Dockerfile sudah membaca env `PORT` dari Render dan fallback ke `8000` untuk lokal.
+
 ## Endpoint
 
 ```text
