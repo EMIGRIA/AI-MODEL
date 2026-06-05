@@ -117,13 +117,6 @@ Selain itu, terdapat safety logic:
 `-- README.md
 ```
 
-## Pelatihan Model 
-https://drive.google.com/file/d/1kqDYxGOaRVjobztG7JpoFhJBqcAQ_L0m/view?usp=sharing
-
-## Model AI
-https://drive.google.com/drive/folders/11c3c1XTkheyiVLXpp9p3MEuWPCCRbf5R?usp=sharing
-
-
 
 ## Artifact Model
 
