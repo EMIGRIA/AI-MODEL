@@ -110,6 +110,10 @@ Selain itu, terdapat safety logic:
 |-- .gitignore
 `-- README.md
 ```
+## AI Development
+https://colab.research.google.com/drive/1MFuZI4uDeJPVSPKda0iuZZAgfU_bUZtz#scrollTo=dOjzjrfv_3Cj
+
+
 
 ## Artifact Model
 
