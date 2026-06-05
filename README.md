@@ -111,7 +111,7 @@ Selain itu, terdapat safety logic:
 `-- README.md
 ```
 ## AI Development
-https://drive.google.com/file/d/1V_wGArc6gkQvMFdfdcYjdnPo4YaFuUNf/view?usp=sharing
+https://drive.google.com/drive/folders/11c3c1XTkheyiVLXpp9p3MEuWPCCRbf5R?usp=sharing
 
 
 
