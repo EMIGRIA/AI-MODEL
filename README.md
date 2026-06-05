@@ -110,6 +110,10 @@ Selain itu, terdapat safety logic:
 |-- .gitignore
 `-- README.md
 ```
+
+## Pelatihan Model Machine Learning
+https://drive.google.com/file/d/1kqDYxGOaRVjobztG7JpoFhJBqcAQ_L0m/view?usp=sharing
+
 ## AI Development
 https://drive.google.com/drive/folders/11c3c1XTkheyiVLXpp9p3MEuWPCCRbf5R?usp=sharing
 
