@@ -4,6 +4,12 @@ Emigria AI Model Service adalah layanan backend berbasis FastAPI untuk mendeteks
 
 Service ini menerima data lowongan kerja dalam format JSON, melakukan preprocessing, menjalankan model MLP TensorFlow, lalu menggabungkan hasil model dengan PMI risk rules untuk menghasilkan skor risiko akhir.
 
+## Pelatihan Model 
+https://drive.google.com/file/d/1kqDYxGOaRVjobztG7JpoFhJBqcAQ_L0m/view?usp=sharing
+
+## Model AI
+https://drive.google.com/drive/folders/11c3c1XTkheyiVLXpp9p3MEuWPCCRbf5R?usp=sharing
+
 ## Tujuan Project
 
 Project ini dibuat sebagai AI inference service untuk aplikasi Emigria. Fokus utamanya adalah membantu mengidentifikasi lowongan kerja luar negeri yang berpotensi berisiko berdasarkan:
